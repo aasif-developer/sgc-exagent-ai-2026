@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import HeroSection from "../sections/HeroSection";
@@ -14,6 +16,27 @@ import ContactSection from "../sections/ContactSection";
  * added here as they're built out.
  */
 const Home = () => {
+  const location = useLocation();
+
+useEffect(() => {
+  if (location.state?.scrollTo) {
+    setTimeout(() => {
+      const target = document.querySelector(location.state.scrollTo);
+
+      if (target) {
+        const navbarHeight = 80;
+
+        window.scrollTo({
+          top: target.offsetTop - navbarHeight,
+          behavior: "smooth",
+        });
+
+        // Clear the state so refresh/back doesn't scroll again
+        window.history.replaceState({}, document.title);
+      }
+    }, 100);
+  }
+}, [location]);
   return (
     <>
       <Header />
