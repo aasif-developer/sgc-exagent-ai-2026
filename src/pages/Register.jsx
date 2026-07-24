@@ -3,7 +3,9 @@ import { motion } from "framer-motion";
 import { UserPlus, ChevronDown } from "lucide-react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
+import { validateRegistration } from "../utils/validation";
+import { registerStudent } from "../services/registrationService";
+import TeamCardModal from "../components/TeamCardModal";
 // Department options
 const departments = [
   "CSE",
@@ -40,20 +42,54 @@ const initialFormData = {
  */
 const Register = () => {
   const [formData, setFormData] = useState(initialFormData);
+  const [errors, setErrors] = useState({});
+  const [showModal, setShowModal] = useState(false);
+const [student, setStudent] = useState(null);
 
   const showSection = departmentsWithSections.includes(formData.department);
 
   // Generic change handler shared by every input and select
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+ const handleChange = (e) => {
+  const { name, value } = e.target;
 
-  // Form submit handler — validation and registration logic added later
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // TODO: Add validation and registration/backend submission logic here.
-  };
+  setFormData((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+
+  setErrors((prev) => ({
+    ...prev,
+    [name]: "",
+  }));
+};
+
+  // Form submit handler
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const result = validateRegistration(formData);
+
+  if (!result.success) {
+    setErrors(result.errors);
+    return;
+  }
+
+  // Clear previous errors
+  setErrors({});
+
+  // Register student
+  const response = await registerStudent(result.data);
+
+  if (!response.success) {
+    alert(response.error);
+    return;
+  }
+
+setStudent(response.student);
+setShowModal(true);
+  // Reset form
+  setFormData(initialFormData);
+};
 
   return (
     <>
@@ -137,91 +173,114 @@ const Register = () => {
                   required
                   className="rounded-lg bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-[#F8FAFC] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#3B82F6] transition-colors duration-200"
                 />
+                {errors.fullName && (
+  <p className="mt-1 text-sm text-red-500">
+    {errors.fullName}
+  </p>
+)}
               </div>
 
               {/* Department + Section */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div className="flex flex-col gap-2">
-                  <label
-                    htmlFor="department"
-                    className="text-[#F8FAFC] text-sm font-medium"
-                  >
-                    Department
-                  </label>
-                  <div className="relative">
-                    <select
-                      id="department"
-                      name="department"
-                      value={formData.department}
-                      onChange={handleChange}
-                      required
-                      className="w-full appearance-none rounded-lg bg-white/5 border border-white/10 px-4 py-2.5 pr-10 text-sm text-[#F8FAFC] focus:outline-none focus:border-[#3B82F6] transition-colors duration-200"
-                    >
-                      <option value="" className="bg-[#111827] text-[#94A3B8]">
-                        Select your department
-                      </option>
-                      {departments.map((dept) => (
-                        <option
-                          key={dept}
-                          value={dept}
-                          className="bg-[#111827] text-[#F8FAFC]"
-                        >
-                          {dept}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown
-                      size={16}
-                      className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8]"
-                    />
-                  </div>
-                </div>
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+  {/* Department */}
+  <div className="flex flex-col gap-2">
+    <label
+      htmlFor="department"
+      className="text-[#F8FAFC] text-sm font-medium"
+    >
+      Department
+    </label>
 
-                {/* Section - only for CSE & IT */}
-                {showSection && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="flex flex-col gap-2 overflow-hidden"
-                  >
-                    <label
-                      htmlFor="section"
-                      className="text-[#F8FAFC] text-sm font-medium"
-                    >
-                      Section
-                    </label>
-                    <div className="relative">
-                      <select
-                        id="section"
-                        name="section"
-                        value={formData.section}
-                        onChange={handleChange}
-                        required={showSection}
-                        className="w-full appearance-none rounded-lg bg-white/5 border border-white/10 px-4 py-2.5 pr-10 text-sm text-[#F8FAFC] focus:outline-none focus:border-[#3B82F6] transition-colors duration-200"
-                      >
-                        <option value="" className="bg-[#111827] text-[#94A3B8]">
-                          Select your section
-                        </option>
-                        {sections.map((sec) => (
-                          <option
-                            key={sec}
-                            value={sec}
-                            className="bg-[#111827] text-[#F8FAFC]"
-                          >
-                            {sec}
-                          </option>
-                        ))}
-                      </select>
-                      <ChevronDown
-                        size={16}
-                        className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8]"
-                      />
-                    </div>
-                  </motion.div>
-                )}
-              </div>
+    <div className="relative">
+      <select
+        id="department"
+        name="department"
+        value={formData.department}
+        onChange={handleChange}
+        required
+        className="w-full appearance-none rounded-lg bg-white/5 border border-white/10 px-4 py-2.5 pr-10 text-sm text-[#F8FAFC] focus:outline-none focus:border-[#3B82F6] transition-colors duration-200"
+      >
+        <option value="" className="bg-[#111827] text-[#94A3B8]">
+          Select your department
+        </option>
 
+        {departments.map((dept) => (
+          <option
+            key={dept}
+            value={dept}
+            className="bg-[#111827] text-[#F8FAFC]"
+          >
+            {dept}
+          </option>
+        ))}
+      </select>
+
+      <ChevronDown
+        size={16}
+        className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8]"
+      />
+    </div>
+
+    {errors.department && (
+      <p className="mt-1 text-sm text-red-500">
+        {errors.department}
+      </p>
+    )}
+  </div>
+
+  {/* Section - only for CSE & IT */}
+  {showSection && (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="flex flex-col gap-2 overflow-hidden"
+    >
+      <label
+        htmlFor="section"
+        className="text-[#F8FAFC] text-sm font-medium"
+      >
+        Section
+      </label>
+
+      <div className="relative">
+        <select
+          id="section"
+          name="section"
+          value={formData.section}
+          onChange={handleChange}
+          required={showSection}
+          className="w-full appearance-none rounded-lg bg-white/5 border border-white/10 px-4 py-2.5 pr-10 text-sm text-[#F8FAFC] focus:outline-none focus:border-[#3B82F6] transition-colors duration-200"
+        >
+          <option value="" className="bg-[#111827] text-[#94A3B8]">
+            Select your section
+          </option>
+
+          {sections.map((sec) => (
+            <option
+              key={sec}
+              value={sec}
+              className="bg-[#111827] text-[#F8FAFC]"
+            >
+              {sec}
+            </option>
+          ))}
+        </select>
+
+        <ChevronDown
+          size={16}
+          className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8]"
+        />
+      </div>
+
+      {errors.section && (
+        <p className="mt-1 text-sm text-red-500">
+          {errors.section}
+        </p>
+      )}
+    </motion.div>
+  )}
+</div>
               {/* Roll Number */}
               <div className="flex flex-col gap-2">
                 <label
@@ -242,6 +301,11 @@ const Register = () => {
                   required
                   className="rounded-lg bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-[#F8FAFC] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#3B82F6] transition-colors duration-200"
                 />
+                {errors.rollNumber && (
+  <p className="mt-1 text-sm text-red-500">
+    {errors.rollNumber}
+  </p>
+)}
               </div>
 
               {/* Email + Phone */}
@@ -264,6 +328,11 @@ const Register = () => {
                     required
                     className="rounded-lg bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-[#F8FAFC] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#3B82F6] transition-colors duration-200"
                   />
+                  {errors.email && (
+  <p className="mt-1 text-sm text-red-500">
+    {errors.email}
+  </p>
+)}
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -285,6 +354,11 @@ const Register = () => {
                     required
                     className="rounded-lg bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-[#F8FAFC] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#3B82F6] transition-colors duration-200"
                   />
+                  {errors.phone && (
+  <p className="mt-1 text-sm text-red-500">
+    {errors.phone}
+  </p>
+)}
                 </div>
               </div>
 
@@ -304,6 +378,11 @@ const Register = () => {
       </main>
 
       <Footer />
+      <TeamCardModal
+  open={showModal}
+  student={student}
+  onClose={() => setShowModal(false)}
+/>
     </>
   );
 };
