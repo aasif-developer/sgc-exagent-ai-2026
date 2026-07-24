@@ -32,6 +32,14 @@ const Navbar = () => {
   const handleScrollTo = (href) => {
   closeMenu();
 
+  // If we're not on the Home page, navigate there first
+  if (location.pathname !== "/") {
+    navigate("/", {
+      state: { scrollTo: href },
+    });
+    return;
+  }
+
   setTimeout(() => {
     const target = document.querySelector(href);
 

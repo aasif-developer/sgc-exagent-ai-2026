@@ -9,6 +9,11 @@
  * href  -> anchor target (section id on the landing page)
  */
 export const navLinks = [
+   {
+    id: "home",
+    label: "Home",
+    href: "/",
+  },
   {
     id: "about",
     label: "About",
