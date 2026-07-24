@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { UserPlus, ChevronDown } from "lucide-react";
 import Header from "../components/Header";
@@ -45,6 +45,27 @@ const Register = () => {
   const [errors, setErrors] = useState({});
   const [showModal, setShowModal] = useState(false);
 const [student, setStudent] = useState(null);
+
+useEffect(() => {
+  const images = [
+    "/team-images/drdoom.png",
+    "/team-images/thanos.png",
+    "/team-images/ironman.png",
+    "/team-images/captainamerica.png",
+    "/team-images/thor.png",
+    "/team-images/hulk.png",
+    "/team-images/spiderman.png",
+    "/team-images/superman.png",
+    "/team-images/batman.png",
+    "/team-images/flash.png",
+    "/team-images/default.png",
+  ];
+
+  images.forEach((src) => {
+    const img = new Image();
+    img.src = src;
+  });
+}, []);
 
   const showSection = departmentsWithSections.includes(formData.department);
 
