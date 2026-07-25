@@ -29,10 +29,10 @@ const faqs = [
       "Yes, every student who completes the workshop will receive an official certificate of participation from the Student Guidance Cell.",
   },
   {
-    id: "registration-deadline",
-    question: "Is there a registration deadline?",
+    id: "speaker",
+    question: "Who will conduct the workshop?",
     answer:
-      "Yes, seats are limited and allotted on a first-come, first-served basis. Register early through the Register Now button to secure your spot.",
+      "The workshop will be conducted by Hrithik Kademani, Software Developer at Merida Tech Minds, with practical sessions on AI Agents and modern AI development.",
   },
 ];
 
