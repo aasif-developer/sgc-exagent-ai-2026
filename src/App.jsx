@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
-
-// Temporary placeholder pages until their dedicated files are built
-const LoginPlaceholder = () => <h1>Coordinator Login Coming Soon</h1>;
-const DashboardPlaceholder = () => <h1>Coordinator Dashboard Coming Soon</h1>;
-
+import Login from "./pages/Login";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import AdminDashboard from "./pages/AdminDashboard";
+import CoordinatorDashboard from "./pages/CoordinatorDashboard";
+import ScrollToTop from "./components/ScrollToTop";
 /**
  * App
  * Root component wiring up all application routes.
@@ -13,11 +13,28 @@ const DashboardPlaceholder = () => <h1>Coordinator Dashboard Coming Soon</h1>;
 const App = () => {
   return (
     <BrowserRouter>
+    <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<LoginPlaceholder />} />
-        <Route path="/dashboard" element={<DashboardPlaceholder />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+  path="/admin"
+  element={
+    <ProtectedRoute>
+      <AdminDashboard />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/coordinator"
+  element={
+    <ProtectedRoute>
+      <CoordinatorDashboard />
+    </ProtectedRoute>
+  }
+/>
       </Routes>
     </BrowserRouter>
   );

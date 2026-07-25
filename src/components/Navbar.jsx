@@ -15,7 +15,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isRegisterPage = location.pathname === "/register";
-
+const isLoginPage = location.pathname === "/login";
   // Track scroll position to intensify the glass/blur effect once scrolled
   useEffect(() => {
     const handleScroll = () => {
@@ -31,6 +31,12 @@ const Navbar = () => {
   // Smooth scroll to a section by id, then close mobile menu
   const handleScrollTo = (href) => {
   closeMenu();
+
+  // Home button
+  if (href === "/") {
+    navigate("/");
+    return;
+  }
 
   // If we're not on the Home page, navigate there first
   if (location.pathname !== "/") {
@@ -111,9 +117,22 @@ const Navbar = () => {
   ))}
 </nav>
 
-{/* Desktop Register Button */}
-{!isRegisterPage && (
-  <div className="hidden md:flex items-center">
+{/* Desktop Action Buttons */}
+<div className="hidden md:flex items-center gap-3">
+  {/* Login: hidden only on /login */}
+  {!isLoginPage && (
+    <motion.button
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.97 }}
+      onClick={() => handleNavigate("/login")}
+      className="px-5 py-2.5 rounded-lg border border-white/10 bg-white/5 backdrop-blur-md text-white text-sm font-medium hover:bg-white/10 transition-all duration-300"
+    >
+      Login
+    </motion.button>
+  )}
+
+  {/* Register: hidden only on /register */}
+  {!isRegisterPage && (
     <motion.button
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
@@ -123,12 +142,13 @@ const Navbar = () => {
       Register
       <ArrowRight size={16} />
     </motion.button>
-  </div>
-)}
+  )}
+</div>
 
           {/* Mobile Hamburger Trigger */}
           {/* Mobile Actions */}
 <div className="flex items-center gap-2 md:hidden">
+  {/* Mobile Register: hidden only on /register */}
   {!isRegisterPage && (
   <motion.button
     whileTap={{ scale: 0.97 }}
@@ -173,12 +193,15 @@ const Navbar = () => {
                 </button>
               ))}
 
-              <button
-                onClick={() => handleNavigate("/login")}
-                className="text-left text-[#F8FAFC] text-base font-medium py-3 border-b border-white/5 transition-colors duration-200"
-              >
-                Coordinator Login
-              </button>
+              {/* Mobile menu Login: hidden only on /login */}
+              {!isLoginPage && (
+                <button
+                  onClick={() => handleNavigate("/login")}
+                  className="text-left text-[#F8FAFC] text-base font-medium py-3 border-b border-white/5 transition-colors duration-200"
+                >
+                  Login
+                </button>
+              )}
             </div>
           </motion.div>
         )}
