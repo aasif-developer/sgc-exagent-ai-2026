@@ -1,15 +1,54 @@
 // src/services/registrationService.js
 
-import { supabase } from "./supabase";
+import { supabase, isSupabaseConfigured } from "./supabase";
 import { TEAMS } from "../data/teams";
 import { allocateTeam } from "./teamAllocation";
 
+// Fallback logic for mock mode
+const getMockTeam = (name) => {
+  const searchName = name.toLowerCase();
+  if (searchName.includes("doom")) return "Doctor Doom";
+  if (searchName.includes("thanos")) return "Thanos";
+  if (searchName.includes("iron")) return "Iron Man";
+  if (searchName.includes("batman")) return "Batman";
+  if (searchName.includes("captain")) return "Captain America";
+  if (searchName.includes("thor")) return "Thor";
+  if (searchName.includes("hulk")) return "Hulk";
+  if (searchName.includes("spider")) return "Spider-Man";
+  if (searchName.includes("flash")) return "Flash";
+  return "Superman";
+};
+
 /**
- * Register a student and automatically assign a team.
+ * Register a student and assign a team.
+ * Falls back to offline mock mode if Supabase credentials are not configured.
  * @param {Object} studentData
  * @returns {Object}
  */
 export const registerStudent = async (studentData) => {
+  // Offline Mock Fallback (safe for local development / testing)
+  if (!isSupabaseConfigured) {
+    console.warn("Supabase is not configured. Falling back to offline mock mode for design preview.");
+    
+    const selectedTeam = getMockTeam(studentData.fullName);
+
+    return {
+      success: true,
+      student: {
+        id: 999,
+        name: studentData.fullName,
+        email: studentData.email,
+        phone: studentData.phone,
+        roll_number: studentData.rollNumber,
+        department: studentData.department,
+        section: studentData.section,
+        team_id: TEAMS.find(t => t.name === selectedTeam)?.id || 1,
+        team_name: selectedTeam
+      }
+    };
+  }
+
+  // Real Production Supabase Flow
   try {
     // Fetch all registered students
     const { data: students, error: fetchError } = await supabase
