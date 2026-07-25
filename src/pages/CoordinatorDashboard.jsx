@@ -79,15 +79,28 @@ const { data: studentData } =
     loadDashboard();
   }, []);
 
-  const filteredStudents = students.filter((student) => {
-  const search = searchTerm.toLowerCase();
+const filteredStudents = students.filter((student) => {
+  const search = searchTerm.trim().toLowerCase();
+
+  // Match payment status with partial words & aliases
+  const isPaidSearch =
+    "paid".startsWith(search) ||
+    "payment".startsWith(search) ||
+    ["p", "pay", "paid", "payment", "yes", "true", "done"].includes(search);
+
+  const isUnpaidSearch =
+    "unpaid".startsWith(search) ||
+    "pending".startsWith(search) ||
+    ["u", "un", "unp", "unpaid", "pending", "no", "false"].includes(search);
 
   return (
     student.name?.toLowerCase().includes(search) ||
-    student.roll_number?.toString().includes(search)
+    student.roll_number?.toString().includes(search) ||
+    student.team_name?.toLowerCase().includes(search) ||
+    (isPaidSearch && student.payment_status) ||
+    (isUnpaidSearch && !student.payment_status)
   );
 });
-
   if (loading) {
     return (
       <>
@@ -149,7 +162,7 @@ const { data: studentData } =
           <div className="mb-6">
   <input
     type="text"
-    placeholder="Search by Name or Roll Number..."
+    placeholder="Search by Name, Roll No, Team or Paid/Unpaid..."
     value={searchTerm}
     onChange={(e) => setSearchTerm(e.target.value)}
     className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-slate-400 focus:border-violet-500 focus:outline-none"

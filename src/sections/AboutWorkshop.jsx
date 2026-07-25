@@ -1,110 +1,125 @@
 import { motion } from "framer-motion";
-import { Target, GraduationCap } from "lucide-react";
 
-// Objectives listed for the workshop
-const objectives = [
-  "Introduce core concepts behind AI Agents and how they operate.",
-  "Demonstrate practical use of modern AI tools and frameworks.",
-  "Guide students through building a small working AI project.",
-  "Bridge the gap between classroom theory and real-world AI application.",
+const terminalLines = [
+  "Checking Requirements...",
+  "",
+  "✓ Curiosity",
+  "✓ Laptop",
+  "✓ Passion",
+  "",
+  "Loading AI Modules...",
+  "████████████████ 100%",
+  "",
+  "Installing:",
+  "✓ AI Agents",
+  "✓ Prompt Engineering",
+  "✓ Modern AI Tools",
+  "✓ Hands-on Project",
+  "",
+  "Workshop Ready!",
+  "",
+  "Press Register to join... █",
 ];
 
-// Learning outcomes for attendees
-const outcomes = [
-  "Understand how AI Agents reason, plan, and execute tasks.",
-  "Gain hands-on experience with real AI development workflows.",
-  "Build confidence to explore AI further, independently.",
-  "Walk away with a project and certificate to showcase.",
-];
-
-/**
- * AboutWorkshop
- * Explains what the workshop covers, its objectives, and the outcomes
- * students can expect — presented as two complementary cards.
- */
 const AboutWorkshop = () => {
   return (
-    <section id="about" className="relative bg-[#030712] py-16 md:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section heading + description */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="max-w-3xl mb-12"
-        >
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#F8FAFC] tracking-tight">
-            About the{" "}
-            <span className="bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] bg-clip-text text-transparent">
-              Workshop
-            </span>
-          </h2>
-          <p className="mt-4 text-[#94A3B8] text-sm sm:text-base leading-relaxed">
-            EXAGENT AI is a focused, hands-on workshop designed to introduce
-            3rd Year students to the fundamentals of AI Agents and modern AI
-            technologies. Rather than passive lectures, the session
-            prioritizes practical building — helping students move from
-            understanding concepts to applying them.
-          </p>
-        </motion.div>
-
-        {/* Objectives + Outcomes cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <section
+      id="about"
+      className="relative bg-[#030712] py-16 md:py-24 overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-2 gap-14 items-center">
+          {/* Left Content */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="rounded-xl border border-white/10 bg-[#111827]/60 backdrop-blur-md p-6 sm:p-7"
+            transition={{ duration: 0.7 }}
           >
-            <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#3B82F6]/20 to-[#8B5CF6]/20 border border-white/10 flex items-center justify-center">
-                <Target size={18} className="text-[#3B82F6]" />
-              </div>
-              <h3 className="text-[#F8FAFC] font-semibold text-lg">
-                Objectives
-              </h3>
-            </div>
-            <ul className="flex flex-col gap-3">
-              {objectives.map((item, index) => (
-                <li
-                  key={index}
-                  className="flex items-start gap-2.5 text-[#94A3B8] text-sm leading-relaxed"
+            <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+              About the{" "}
+              <span className="bg-gradient-to-r from-blue-500 to-violet-500 bg-clip-text text-transparent">
+                Workshop
+              </span>
+            </h2>
+
+            <p className="mt-6 text-slate-400 text-lg leading-8">
+              <span className="text-white font-medium">EXAGENT AI</span> is a
+              hands-on workshop designed to introduce students to AI Agents and
+              modern AI development. Learn by building real projects, exploring
+              industry tools, and gaining practical experience beyond the
+              classroom.
+            </p>
+
+            <div className="mt-10 flex flex-wrap gap-3">
+              {[
+                "AI Agents",
+                "LLMs",
+                "Automation",
+                "Hands-on Project",
+                "Certificate",
+              ].map((item) => (
+                <span
+                  key={item}
+                  className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm text-slate-300"
                 >
-                  <span className="mt-2 w-1.5 h-1.5 rounded-full bg-[#3B82F6] shrink-0" />
                   {item}
-                </li>
+                </span>
               ))}
-            </ul>
+            </div>
           </motion.div>
 
+          {/* Right Terminal */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-            className="rounded-xl border border-white/10 bg-[#111827]/60 backdrop-blur-md p-6 sm:p-7"
+            transition={{ duration: 0.7 }}
+            className="relative"
           >
-            <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#3B82F6]/20 to-[#8B5CF6]/20 border border-white/10 flex items-center justify-center">
-                <GraduationCap size={18} className="text-[#8B5CF6]" />
+            <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-[#111111]">
+              {/* Terminal Header */}
+              <div className="flex items-center gap-2 px-5 py-3 border-b border-white/10 bg-[#1A1A1A]">
+                <div className="w-3 h-3 rounded-full bg-red-500" />
+                <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                <div className="w-3 h-3 rounded-full bg-green-500" />
+
+                <span className="ml-4 text-xs text-slate-400">
+                  Terminal
+                </span>
               </div>
-              <h3 className="text-[#F8FAFC] font-semibold text-lg">
-                Learning Outcomes
-              </h3>
+
+              {/* Terminal Body */}
+              <div className="font-mono text-sm md:text-base p-6 space-y-2 text-slate-200">
+                <div className="text-blue-400">
+                  $ exagent start
+                </div>
+
+                {terminalLines.map((line, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -8 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      delay: index * 0.08,
+                      duration: 0.25,
+                    }}
+                    className={
+                      line.startsWith("✓")
+                        ? "text-green-400"
+                        : line.includes("100%")
+                        ? "text-blue-400"
+                        : line.includes("Workshop Ready")
+                        ? "text-violet-400"
+                        : ""
+                    }
+                  >
+                    {line}
+                  </motion.div>
+                ))}
+              </div>
             </div>
-            <ul className="flex flex-col gap-3">
-              {outcomes.map((item, index) => (
-                <li
-                  key={index}
-                  className="flex items-start gap-2.5 text-[#94A3B8] text-sm leading-relaxed"
-                >
-                  <span className="mt-2 w-1.5 h-1.5 rounded-full bg-[#8B5CF6] shrink-0" />
-                  {item}
-                </li>
-              ))}
-            </ul>
           </motion.div>
         </div>
       </div>
