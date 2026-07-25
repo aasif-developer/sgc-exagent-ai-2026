@@ -54,7 +54,7 @@ useEffect(() => {
     "/team-images/captainamerica.png",
     "/team-images/thor.png",
     "/team-images/hulk.png",
-    "/team-images/spiderman.png",
+    "/team-images/siperman.png",
     "/team-images/superman.png",
     "/team-images/batman.png",
     "/team-images/flash.png",

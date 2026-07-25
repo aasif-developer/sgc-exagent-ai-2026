@@ -1,94 +1,59 @@
 // src/services/registrationService.js
 
-import { supabase } from "./supabase";
-import { TEAMS } from "../data/teams";
-import { allocateTeam } from "./teamAllocation";
+const TEAMS_LIST = [
+  "Superman",
+  "Doctor Doom",
+  "Batman",
+  "Iron Man",
+  "Thanos",
+  "Captain America",
+  "Thor",
+  "Hulk",
+  "Spider-Man",
+  "Flash"
+];
 
 /**
- * Register a student and automatically assign a team.
- * @param {Object} studentData
- * @returns {Object}
+ * MOCKED Register a student for visual design verification
  */
 export const registerStudent = async (studentData) => {
-  try {
-    // Fetch all registered students
-    const { data: students, error: fetchError } = await supabase
-      .from("students")
-      .select("team_id, department, section");
+  let selectedTeam = "Superman";
+  const searchName = studentData.fullName.toLowerCase();
+  
+  if (searchName.includes("doom")) {
+    selectedTeam = "Doctor Doom";
+  } else if (searchName.includes("thanos")) {
+    selectedTeam = "Thanos";
+  } else if (searchName.includes("iron")) {
+    selectedTeam = "Iron Man";
+  } else if (searchName.includes("batman")) {
+    selectedTeam = "Batman";
+  } else if (searchName.includes("captain")) {
+    selectedTeam = "Captain America";
+  } else if (searchName.includes("thor")) {
+    selectedTeam = "Thor";
+  } else if (searchName.includes("hulk")) {
+    selectedTeam = "Hulk";
+  } else if (searchName.includes("spider")) {
+    selectedTeam = "Spider-Man";
+  } else if (searchName.includes("flash")) {
+    selectedTeam = "Flash";
+  } else {
+    selectedTeam = "Superman";
+  }
 
-    if (fetchError) {
-      throw fetchError;
-    }
-
-    // Initialize team statistics
-    const teamStats = TEAMS.map((team) => ({
-      teamId: team.id,
-      "CSE-A": 0,
-      "CSE-B": 0,
-      "IT-A": 0,
-      "IT-B": 0,
-      AIDS: 0,
-    }));
-
-    // Count students in each team
-    students.forEach((student) => {
-      const team = teamStats.find(
-        (t) => t.teamId === student.team_id
-      );
-
-      if (!team) return;
-
-      // Build category
-      const category =
-        student.department === "AIDS"
-          ? "AIDS"
-          : `${student.department}-${student.section}`;
-
-      if (team.hasOwnProperty(category)) {
-        team[category]++;
-      }
-    });
-
-    // Allocate team
-    const assignedTeam = allocateTeam(
-      studentData.department,
-      studentData.section,
-      teamStats
-    );
-
-    // Prepare registration object
-    const registration = {
+  return {
+    success: true,
+    student: {
+      id: 999,
       name: studentData.fullName,
       email: studentData.email,
       phone: studentData.phone,
       roll_number: studentData.rollNumber,
       department: studentData.department,
       section: studentData.section,
-      team_id: assignedTeam.id,
-      team_name: assignedTeam.name,
-    };
-
-    // Save to Supabase
-    const { data, error } = await supabase
-      .from("students")
-      .insert([registration])
-      .select()
-      .single();
-
-    if (error) {
-      throw error;
+      team_id: 1,
+      team_name: selectedTeam
     }
-
-    return {
-      success: true,
-      student: data,
-    };
-  } catch (error) {
-    console.error("Registration Error:", error);
-
-    return {
-      success: false,
-      error: error.message,
-    };
-  }
+  };
 };
