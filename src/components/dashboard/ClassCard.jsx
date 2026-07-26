@@ -34,8 +34,9 @@ const ClassCard = ({
 
           <div>
             <h3 className="text-lg font-semibold text-white">
-              {department} - {section}
-            </h3>
+  {department}
+  {section && ` - ${section}`}
+</h3>
 
             <div className="mt-1 flex items-center gap-2 text-sm text-slate-400">
               <Users size={15} />

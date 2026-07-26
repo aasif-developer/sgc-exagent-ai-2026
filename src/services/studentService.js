@@ -27,7 +27,7 @@ export const updatePaymentStatus = async (
   return { data, error };
 };
 
-/// Get students by department & section (Coordinator)
+// Get students by department & section (Coordinator)
 export const getStudentsByCoordinator = async (
   department,
   section
@@ -48,6 +48,7 @@ export const getStudentsByCoordinator = async (
 
   return { data, error };
 };
+
 // Get department-wise student counts (Admin Dashboard)
 export const getDepartmentCounts = async () => {
   const { data, error } = await supabase
@@ -61,12 +62,19 @@ export const getDepartmentCounts = async () => {
   const counts = {};
 
   data.forEach((student) => {
-    const key = `${student.department}-${student.section}`;
+    // AIDS has no sections
+    const key =
+      student.department === "AIDS"
+        ? "AIDS"
+        : `${student.department}-${student.section}`;
 
     if (!counts[key]) {
       counts[key] = {
         department: student.department,
-        section: student.section,
+        section:
+          student.department === "AIDS"
+            ? ""
+            : student.section,
         studentCount: 0,
       };
     }
@@ -75,22 +83,24 @@ export const getDepartmentCounts = async () => {
   });
 
   const departmentOrder = {
-  CSE: 1,
-  IT: 2,
-  AIDS: 3,
-};
+    CSE: 1,
+    IT: 2,
+    AIDS: 3,
+  };
 
-return {
-  data: Object.values(counts).sort((a, b) => {
-    if (departmentOrder[a.department] !== departmentOrder[b.department]) {
-      return (
-        departmentOrder[a.department] -
-        departmentOrder[b.department]
+  return {
+    data: Object.values(counts).sort((a, b) => {
+      if (departmentOrder[a.department] !== departmentOrder[b.department]) {
+        return (
+          departmentOrder[a.department] -
+          departmentOrder[b.department]
+        );
+      }
+
+      return (a.section || "").localeCompare(
+        b.section || ""
       );
-    }
-
-    return a.section.localeCompare(b.section);
-  }),
-  error: null,
-};
+    }),
+    error: null,
+  };
 };
