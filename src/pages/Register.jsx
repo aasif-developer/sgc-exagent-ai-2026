@@ -45,6 +45,7 @@ const Register = () => {
   const [errors, setErrors] = useState({});
   const [showModal, setShowModal] = useState(false);
 const [student, setStudent] = useState(null);
+const [submitError, setSubmitError] = useState("");
 
 useEffect(() => {
   const images = [
@@ -68,6 +69,7 @@ useEffect(() => {
 }, []);
 
   const showSection = departmentsWithSections.includes(formData.department);
+  const hasErrors = Object.values(errors).some((error) => error);
 
   // Generic change handler shared by every input and select
  const handleChange = (e) => {
@@ -99,15 +101,18 @@ const handleSubmit = async (e) => {
   setErrors({});
 
   // Register student
+  setSubmitError("");
   const response = await registerStudent(result.data);
 
   if (!response.success) {
-    alert(response.error);
-    return;
+    setSubmitError(response.error);
+return;
+    
   }
 
 setStudent(response.student);
 setShowModal(true);
+setSubmitError("");
   // Reset form
   setFormData(initialFormData);
 };
@@ -303,32 +308,38 @@ setShowModal(true);
   )}
 </div>
               {/* Roll Number */}
-              <div className="flex flex-col gap-2">
-                <label
-                  htmlFor="rollNumber"
-                  className="text-[#F8FAFC] text-sm font-medium"
-                >
-                  Roll Number
-                </label>
-                <input
-                  id="rollNumber"
-                  name="rollNumber"
-                  type="text"
-                  value={formData.rollNumber}
-                  onChange={handleChange}
-                  placeholder="Enter your roll number"
-                  autoComplete="off"
-                  maxLength={20}
-                  required
-                  className="rounded-lg bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-[#F8FAFC] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#3B82F6] transition-colors duration-200"
-                />
-                {errors.rollNumber && (
-  <p className="mt-1 text-sm text-red-500">
-    {errors.rollNumber}
-  </p>
-)}
-              </div>
+<div className="flex flex-col gap-2">
+  <label
+    htmlFor="rollNumber"
+    className="text-[#F8FAFC] text-sm font-medium"
+  >
+    Complete Roll Number
+  </label>
 
+  <input
+    id="rollNumber"
+    name="rollNumber"
+    type="text"
+    value={formData.rollNumber}
+    onChange={handleChange}
+    placeholder="e.g. 24501 , 24652 or 249107"
+    autoComplete="off"
+    minLength={5}
+    maxLength={8}
+    required
+    className="rounded-lg bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-[#F8FAFC] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#3B82F6] transition-colors duration-200"
+  />
+
+  <p className="text-xs text-[#94A3B8]">
+    Enter your complete college Roll Number.
+  </p>
+
+  {errors.rollNumber && (
+    <p className="mt-1 text-sm text-red-500">
+      {errors.rollNumber}
+    </p>
+  )}
+</div>
               {/* Email + Phone */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="flex flex-col gap-2">
@@ -382,7 +393,165 @@ setShowModal(true);
 )}
                 </div>
               </div>
+              {/* Registration Fee */}
+<div className="mt-8 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md overflow-hidden">
 
+  {/* Header */}
+  <div className="border-b border-white/10 p-6">
+    <h3 className="text-xl font-semibold text-white">
+      💳 Registration Fee
+    </h3>
+
+    <p className="mt-3 text-4xl font-bold text-[#3B82F6]">
+      ₹25
+      <span className="ml-2 text-lg font-medium text-[#94A3B8]">
+        / Student
+      </span>
+    </p>
+
+    <p className="mt-2 text-sm text-[#94A3B8]">
+      Complete the payment using any one of the methods below before registering.
+    </p>
+  </div>
+
+  {/* Payment Methods */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-6">
+
+    {/* Cash */}
+    <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-5">
+      <h4 className="text-lg font-semibold text-white flex items-center gap-2">
+        💵 Cash Payment
+      </h4>
+
+      <ul className="mt-4 space-y-3 text-sm text-[#CBD5E1]">
+        <li>
+          ✓ Pay <strong>₹25</strong> to your{" "}
+          <span className="font-semibold text-emerald-400">
+            Class Coordinator
+          </span>.
+        </li>
+
+        <li>
+          ✓ Mention your{" "}
+          <span className="font-semibold text-[#3B82F6]">
+            Roll Number
+          </span>{" "}
+          while paying.
+        </li>
+      </ul>
+    </div>
+
+    {/* UPI */}
+    <div className="rounded-xl border border-blue-500/20 bg-blue-500/5 p-5">
+      <h4 className="text-lg font-semibold text-white flex items-center gap-2">
+        📱 UPI Payment
+      </h4>
+
+      <ul className="mt-4 space-y-3 text-sm text-[#CBD5E1]">
+        <li>
+          ✓ <span className="font-semibold text-[#3B82F6]">
+            QR Code / GPay Number
+          </span>{" "}
+          will be shared in your class group.
+        </li>
+
+        <li>
+          ✓ Enter your{" "}
+          <span className="font-semibold text-[#3B82F6]">
+            Roll Number
+          </span>{" "}
+          in the{" "}
+          <span className="font-semibold text-[#3B82F6]">
+            Payment Note
+          </span>.
+        </li>
+
+        <li>
+          ✓ Send the{" "}
+          <span className="font-semibold text-[#3B82F6]">
+            Payment Screenshot
+          </span>{" "}
+          to your{" "}
+          <span className="font-semibold text-emerald-400">
+            Class Coordinator
+          </span>.
+        </li>
+      </ul>
+    </div>
+
+  </div>
+{/* Important Notice */}
+<div className="mx-6 mb-6 rounded-xl border border-red-500/20 bg-red-500/5 p-4">
+  <h4 className="flex items-center gap-2 text-base font-semibold text-red-400">
+    📌 Important Instructions
+  </h4>
+
+  <ul className="mt-3 space-y-3 text-sm text-[#E5E7EB]">
+
+    <li>
+      ✓ <span className="font-semibold text-white">Cash:</span>{" "}
+      Mention your{" "}
+      <span className="font-semibold text-red-300">
+        Roll Number
+      </span>.
+    </li>
+
+    <li>
+      ✓ <span className="font-semibold text-white">UPI:</span>{" "}
+      Add your{" "}
+      <span className="font-semibold text-red-300">
+        Roll Number
+      </span>{" "}
+      in the{" "}
+      <span className="font-semibold text-red-300">
+        Payment Note
+      </span>.
+    </li>
+
+    <li>
+      ✓ Send the{" "}
+      <span className="font-semibold text-red-300">
+        Payment Screenshot
+      </span>{" "}
+      to your{" "}
+      <span className="font-semibold text-red-300">
+        Class Coordinator
+      </span>.
+    </li>
+
+  </ul>
+</div>
+</div>
+
+{/* Team Card Reminder */}
+<div className="mx-6 mb-6 rounded-xl border border-blue-500/20 bg-blue-500/5 p-4">
+  <p className="text-center text-sm text-[#CBD5E1]">
+    🪪 <span className="font-semibold text-white">After registration,</span>{" "}
+    download or take a screenshot of your{" "}
+    <span className="font-semibold text-[#3B82F6]">Team Card</span>{" "}
+    and keep it safe for the workshop.
+  </p>
+</div>
+{/* Validation Notice */}
+{hasErrors && (
+  <div className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3">
+    <p className="text-sm text-red-300 text-center">
+      ⚠️ Invalid details detected. Please check the highlighted fields above.
+    </p>
+  </div>
+)}
+
+{submitError && (
+  <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-4">
+    <p className="font-semibold text-red-300">
+      ❌ Registration Failed
+    </p>
+
+    <p className="mt-2 text-sm text-red-200">
+      {submitError}
+    </p>
+  </div>
+)}
               {/* Submit */}
               <motion.button
                 whileHover={{ scale: 1.02 }}
