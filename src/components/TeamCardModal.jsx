@@ -11,7 +11,7 @@ const teamImages = {
   "Captain America": "/team-images/captainamerica.png",
   Thor: "/team-images/thor.png",
   Hulk: "/team-images/hulk.png",
-  "Spider-Man": "/team-images/siperman.png",
+  "Spider-Man": "/team-images/spiderman.png",
   Superman: "/team-images/superman.png",
   Batman: "/team-images/batman.png",
   Flash: "/team-images/flash.png",
