@@ -87,11 +87,15 @@ function validateSection(section, department) {
 
 function validateRollNumber(rollNumber) {
   if (!rollNumber) {
-    return "Roll number is required.";
+    return "Roll Number is required.";
+  }
+
+  if (rollNumber.length < 5 || rollNumber.length > 8) {
+    return "Please enter your complete Roll Number. ";
   }
 
   if (!/^[A-Z0-9]+$/.test(rollNumber)) {
-    return "Roll number can only contain letters and numbers.";
+    return "Roll Number can only contain letters and numbers.";
   }
 
   return null;

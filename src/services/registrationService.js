@@ -50,6 +50,23 @@ export const registerStudent = async (studentData) => {
 
   // Real Production Supabase Flow
   try {
+    // Check if Roll Number is already registered
+const { data: existingStudent, error: checkError } = await supabase
+  .from("students")
+  .select("id")
+  .eq("roll_number", studentData.rollNumber)
+  .maybeSingle();
+
+if (checkError) {
+  throw checkError;
+}
+
+if (existingStudent) {
+  return {
+    success: false,
+    error: `Roll Number ${studentData.rollNumber} is already registered. Your team has already been assigned. Duplicate registration is not allowed.`,
+  };
+}
     // Fetch all registered students
     const { data: students, error: fetchError } = await supabase
       .from("students")

@@ -45,6 +45,7 @@ const Register = () => {
   const [errors, setErrors] = useState({});
   const [showModal, setShowModal] = useState(false);
 const [student, setStudent] = useState(null);
+const [submitError, setSubmitError] = useState("");
 
 useEffect(() => {
   const images = [
@@ -100,15 +101,18 @@ const handleSubmit = async (e) => {
   setErrors({});
 
   // Register student
+  setSubmitError("");
   const response = await registerStudent(result.data);
 
   if (!response.success) {
-    alert(response.error);
-    return;
+    setSubmitError(response.error);
+return;
+    
   }
 
 setStudent(response.student);
 setShowModal(true);
+setSubmitError("");
   // Reset form
   setFormData(initialFormData);
 };
@@ -304,32 +308,38 @@ setShowModal(true);
   )}
 </div>
               {/* Roll Number */}
-              <div className="flex flex-col gap-2">
-                <label
-                  htmlFor="rollNumber"
-                  className="text-[#F8FAFC] text-sm font-medium"
-                >
-                  Roll Number
-                </label>
-                <input
-                  id="rollNumber"
-                  name="rollNumber"
-                  type="text"
-                  value={formData.rollNumber}
-                  onChange={handleChange}
-                  placeholder="Enter your roll number"
-                  autoComplete="off"
-                  maxLength={20}
-                  required
-                  className="rounded-lg bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-[#F8FAFC] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#3B82F6] transition-colors duration-200"
-                />
-                {errors.rollNumber && (
-  <p className="mt-1 text-sm text-red-500">
-    {errors.rollNumber}
-  </p>
-)}
-              </div>
+<div className="flex flex-col gap-2">
+  <label
+    htmlFor="rollNumber"
+    className="text-[#F8FAFC] text-sm font-medium"
+  >
+    Complete Roll Number
+  </label>
 
+  <input
+    id="rollNumber"
+    name="rollNumber"
+    type="text"
+    value={formData.rollNumber}
+    onChange={handleChange}
+    placeholder="e.g. 24501 , 24652 or 249107"
+    autoComplete="off"
+    minLength={5}
+    maxLength={8}
+    required
+    className="rounded-lg bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-[#F8FAFC] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#3B82F6] transition-colors duration-200"
+  />
+
+  <p className="text-xs text-[#94A3B8]">
+    Enter your complete college Roll Number.
+  </p>
+
+  {errors.rollNumber && (
+    <p className="mt-1 text-sm text-red-500">
+      {errors.rollNumber}
+    </p>
+  )}
+</div>
               {/* Email + Phone */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="flex flex-col gap-2">
@@ -527,6 +537,18 @@ setShowModal(true);
   <div className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3">
     <p className="text-sm text-red-300 text-center">
       ⚠️ Invalid details detected. Please check the highlighted fields above.
+    </p>
+  </div>
+)}
+
+{submitError && (
+  <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-4">
+    <p className="font-semibold text-red-300">
+      ❌ Registration Failed
+    </p>
+
+    <p className="mt-2 text-sm text-red-200">
+      {submitError}
     </p>
   </div>
 )}
