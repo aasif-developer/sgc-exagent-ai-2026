@@ -53,7 +53,7 @@ export const registerStudent = async (studentData) => {
     // Check if Roll Number is already registered
 const { data: existingStudent, error: checkError } = await supabase
   .from("students")
-  .select("id")
+  .select("id , team_name")
   .eq("roll_number", studentData.rollNumber)
   .maybeSingle();
 
@@ -64,7 +64,7 @@ if (checkError) {
 if (existingStudent) {
   return {
     success: false,
-    error: `Roll Number ${studentData.rollNumber} is already registered. Your team has already been assigned. Duplicate registration is not allowed.`,
+    error: `Registration already exists for Roll Number ${studentData.rollNumber}.\n\n🎯 Assigned Team: ${existingStudent.team_name}\n\nDuplicate registration is not allowed.`,
   };
 }
     // Fetch all registered students
