@@ -68,6 +68,7 @@ useEffect(() => {
 }, []);
 
   const showSection = departmentsWithSections.includes(formData.department);
+  const hasErrors = Object.values(errors).some((error) => error);
 
   // Generic change handler shared by every input and select
  const handleChange = (e) => {
@@ -382,7 +383,153 @@ setShowModal(true);
 )}
                 </div>
               </div>
+              {/* Registration Fee */}
+<div className="mt-8 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md overflow-hidden">
 
+  {/* Header */}
+  <div className="border-b border-white/10 p-6">
+    <h3 className="text-xl font-semibold text-white">
+      💳 Registration Fee
+    </h3>
+
+    <p className="mt-3 text-4xl font-bold text-[#3B82F6]">
+      ₹25
+      <span className="ml-2 text-lg font-medium text-[#94A3B8]">
+        / Student
+      </span>
+    </p>
+
+    <p className="mt-2 text-sm text-[#94A3B8]">
+      Complete the payment using any one of the methods below before registering.
+    </p>
+  </div>
+
+  {/* Payment Methods */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-6">
+
+    {/* Cash */}
+    <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-5">
+      <h4 className="text-lg font-semibold text-white flex items-center gap-2">
+        💵 Cash Payment
+      </h4>
+
+      <ul className="mt-4 space-y-3 text-sm text-[#CBD5E1]">
+        <li>
+          ✓ Pay <strong>₹25</strong> to your{" "}
+          <span className="font-semibold text-emerald-400">
+            Class Coordinator
+          </span>.
+        </li>
+
+        <li>
+          ✓ Mention your{" "}
+          <span className="font-semibold text-[#3B82F6]">
+            Roll Number
+          </span>{" "}
+          while paying.
+        </li>
+      </ul>
+    </div>
+
+    {/* UPI */}
+    <div className="rounded-xl border border-blue-500/20 bg-blue-500/5 p-5">
+      <h4 className="text-lg font-semibold text-white flex items-center gap-2">
+        📱 UPI Payment
+      </h4>
+
+      <ul className="mt-4 space-y-3 text-sm text-[#CBD5E1]">
+        <li>
+          ✓ <span className="font-semibold text-[#3B82F6]">
+            QR Code / GPay Number
+          </span>{" "}
+          will be shared in your class group.
+        </li>
+
+        <li>
+          ✓ Enter your{" "}
+          <span className="font-semibold text-[#3B82F6]">
+            Roll Number
+          </span>{" "}
+          in the{" "}
+          <span className="font-semibold text-[#3B82F6]">
+            Payment Note
+          </span>.
+        </li>
+
+        <li>
+          ✓ Send the{" "}
+          <span className="font-semibold text-[#3B82F6]">
+            Payment Screenshot
+          </span>{" "}
+          to your{" "}
+          <span className="font-semibold text-emerald-400">
+            Class Coordinator
+          </span>.
+        </li>
+      </ul>
+    </div>
+
+  </div>
+{/* Important Notice */}
+<div className="mx-6 mb-6 rounded-xl border border-red-500/20 bg-red-500/5 p-4">
+  <h4 className="flex items-center gap-2 text-base font-semibold text-red-400">
+    📌 Important Instructions
+  </h4>
+
+  <ul className="mt-3 space-y-3 text-sm text-[#E5E7EB]">
+
+    <li>
+      ✓ <span className="font-semibold text-white">Cash:</span>{" "}
+      Mention your{" "}
+      <span className="font-semibold text-red-300">
+        Roll Number
+      </span>.
+    </li>
+
+    <li>
+      ✓ <span className="font-semibold text-white">UPI:</span>{" "}
+      Add your{" "}
+      <span className="font-semibold text-red-300">
+        Roll Number
+      </span>{" "}
+      in the{" "}
+      <span className="font-semibold text-red-300">
+        Payment Note
+      </span>.
+    </li>
+
+    <li>
+      ✓ Send the{" "}
+      <span className="font-semibold text-red-300">
+        Payment Screenshot
+      </span>{" "}
+      to your{" "}
+      <span className="font-semibold text-red-300">
+        Class Coordinator
+      </span>.
+    </li>
+
+  </ul>
+</div>
+</div>
+
+{/* Team Card Reminder */}
+<div className="mx-6 mb-6 rounded-xl border border-blue-500/20 bg-blue-500/5 p-4">
+  <p className="text-center text-sm text-[#CBD5E1]">
+    🪪 <span className="font-semibold text-white">After registration,</span>{" "}
+    download or take a screenshot of your{" "}
+    <span className="font-semibold text-[#3B82F6]">Team Card</span>{" "}
+    and keep it safe for the workshop.
+  </p>
+</div>
+{/* Validation Notice */}
+{hasErrors && (
+  <div className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3">
+    <p className="text-sm text-red-300 text-center">
+      ⚠️ Invalid details detected. Please check the highlighted fields above.
+    </p>
+  </div>
+)}
               {/* Submit */}
               <motion.button
                 whileHover={{ scale: 1.02 }}

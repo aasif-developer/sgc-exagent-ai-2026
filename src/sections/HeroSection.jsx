@@ -258,13 +258,12 @@ const HeroSection = () => {
             <div className="flex flex-col gap-3">
               <div className="self-start max-w-[85%] rounded-xl rounded-tl-sm bg-white/5 border border-white/10 px-4 py-2.5">
                 <p className="text-[#94A3B8] text-sm">
-                  How do I build my first AI agent?
+                  Ready to learn AI and build your first AI Agent?
                 </p>
               </div>
               <div className="self-end max-w-[85%] rounded-xl rounded-tr-sm bg-gradient-to-r from-[#3B82F6]/20 to-[#8B5CF6]/20 border border-white/10 px-4 py-2.5">
                 <p className="text-[#F8FAFC] text-sm">
-                  Let's start with defining its goal, tools, and reasoning
-                  loop — I'll walk you through it step by step.
+                  Sure! Let's build something amazing.
                 </p>
               </div>
               <div className="self-start max-w-[85%] rounded-xl rounded-tl-sm bg-white/5 border border-white/10 px-4 py-2.5">
