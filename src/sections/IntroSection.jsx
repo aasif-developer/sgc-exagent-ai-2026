@@ -55,11 +55,19 @@ const IntroSection = () => {
   // Mouse parallax — background layers drift a few px toward the cursor
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const smoothX = useSpring(mouseX, { stiffness: 60, damping: 20, mass: 0.6 });
-  const smoothY = useSpring(mouseY, { stiffness: 60, damping: 20, mass: 0.6 });
-  const beamsX = useTransform(smoothX, [-0.5, 0.5], [-8, 8]);
-  const beamsY = useTransform(smoothY, [-0.5, 0.5], [-8, 8]);
+  const smoothX = useSpring(mouseX, {
+  stiffness: 35,
+  damping: 30,
+  mass: 1,
+});
 
+const smoothY = useSpring(mouseY, {
+  stiffness: 35,
+  damping: 30,
+  mass: 1,
+});
+  const beamsX = useTransform(smoothX, [-0.5, 0.5], [-4, 4]);
+const beamsY = useTransform(smoothY, [-0.5, 0.5], [-4, 4]);
   const handleMouseMove = (e) => {
     if (!sectionRef.current) return;
     const rect = sectionRef.current.getBoundingClientRect();
@@ -185,15 +193,15 @@ const IntroSection = () => {
           src="/ai-head.png"
           alt="EXAGENT AI mascot"
          animate={{
-  y: [-25, 25, -25],
-  x: [-50, 0, 50, 0, -50],
-  rotate: [-8, 8, -8],
+  y: [-12, 12, -12],
+  x: [-20, 0, 20, 0, -20],
+  rotate: [-4, 4, -4],
 }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+transition={{
+  duration: 6,
+  repeat: Infinity,
+  ease: "easeInOut",
+}}
           className="w-full h-auto object-contain select-none"
         />
       </motion.div>
