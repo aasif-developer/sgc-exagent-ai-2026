@@ -8,12 +8,17 @@ const Footer = () => {
   const navigate = useNavigate();
 
   const handleScrollTo = (href) => {
-    const target = document.querySelector(href);
+  if (window.location.pathname !== "/") {
+    navigate(`/${href}`);
+    return;
+  }
 
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  const target = document.querySelector(href);
+
+  if (target) {
+    target.scrollIntoView({ behavior: "smooth" });
+  }
+};
 
   return (
     <footer className="relative bg-[#030712] border-t border-white/10 overflow-hidden">

@@ -89,7 +89,11 @@ useEffect(() => {
   // Form submit handler
 const handleSubmit = async (e) => {
   e.preventDefault();
-
+  //registration closed
+setSubmitError(
+  "🔒 Registration has been closed. Thank you for your interest. We look forward to seeing you at future SGC events."
+);
+return;
   const result = validateRegistration(formData);
 
   if (!result.success) {
